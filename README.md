@@ -75,8 +75,7 @@ You need Python 3.11 or newer.
 
 ```bash
 python -m venv venv
-venv\Scripts\activate        # Windows
-# source venv/bin/activate   # macOS / Linux
+venv\Scripts\activate
 ```
 
 **Step 2 — install the libraries**
@@ -94,8 +93,7 @@ pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r req
 **Step 3 — copy the settings file**
 
 ```bash
-copy .env.example .env        # Windows
-# cp .env.example .env        # macOS / Linux
+copy .env.example .env
 ```
 
 **Step 4 — start the app**
@@ -210,13 +208,3 @@ Each application has many status_events (a one-to-many relationship).
 I chose it because it is a real frustration I have right now while job hunting, not an idea
 from the assignment's example list (the assignment asks not to reuse its examples). Because
 the pain is genuine, every design decision came from something I actually needed.
-
----
-
-## What I would improve with more time
-
-- Read emails straight from Gmail instead of pasting them.
-- Send the follow-up reminders automatically by email or notification.
-- Add user accounts so more than one person can use it.
-- Add automated tests and a Docker setup.
-- Add a small web page on top of the API.
