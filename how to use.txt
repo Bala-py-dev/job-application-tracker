@@ -1,0 +1,80 @@
+STEP 1 - Start the app first (you must do this before any testing)
+------------------------------------------------------------------
+Open a terminal in the demo folder and run these lines:
+
+    venv\Scripts\activate
+    uvicorn main:app --reload
+
+
+STEP 2 - Open the test page in your browser
+-------------------------------------------
+Go to: http://127.0.0.1:8000/docs
+
+
+STEP 3 - Which API does which task, and how to test each
+--------------------------------------------------------
+
+1) GET /health
+   Task: Checks the app is running
+   What to type: nothing
+   You should see: {"status":"healthy"}
+
+2) POST /applications/extract
+   Task: AI reads an email and pulls out details
+   What to type:
+       { "text": "We would like to invite you to an interview at Example Corp for the Backend Developer position." }
+   You should see: company: Example Corp, role: Backend Developer, status: interview
+
+3) POST /applications
+   Task: Saves a new application
+   What to type:
+       { "company": "Example Corp", "role": "Backend Developer" }
+   You should see: Saved item with status: applied and 1 event
+
+4) POST /applications/1/status
+   Task: Moves it to next stage + saves history
+   What to type:
+       { "status": "interview", "note": "Call scheduled" }
+   You should see: status: interview and now 2 events
+
+5) GET /applications
+   Task: Lists all saved applications
+   What to type: nothing
+   You should see: A list of your applications
+
+6) GET /applications/1
+   Task: Views one application + its full history
+   What to type: nothing (id = 1)
+   You should see: One application with its events
+
+7) PATCH /applications/1
+   Task: Updates some fields
+   What to type:
+       { "notes": "Referred by a friend" }
+   You should see: The application with the note added
+
+8) GET /reminders
+   Task: Shows follow-ups that are due
+   What to type: nothing
+   You should see: Applications needing follow-up
+
+9) GET /applications/999
+   Task: Proves error handling
+   What to type: nothing (id = 999)
+   You should see: 404 Not found (clean error, no crash)
+
+10) DELETE /applications/1
+    Task: Deletes an application
+    What to type: nothing (id = 1)
+    You should see: Empty response, code 204
+
+
+Which API needs the OpenAI key?
+-------------------------------
+Only (/applications/extract) uses AI.
+
+    If .env has a real OPENAI_API_KEY  -> it uses OpenAI.
+    If the key is empty                -> it uses the built-in parser (still works, no key needed).
+
+Every other API (save, list, update, status, reminders, delete) works without any key -
+they just use the database.
